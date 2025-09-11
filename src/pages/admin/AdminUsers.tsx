@@ -13,6 +13,7 @@ export default function AdminUsers() {
     const [size, setSize] = useState(10);
     const [data, setData] = useState<Page<UserRes> | null>(null);
     const [loading, setLoading] = useState(false);
+    const [confirmUser, setConfirmUser] = useState<UserRes | null>(null); // popup state
     const nav = useNavigate();
 
     const load = async () => {
@@ -31,7 +32,6 @@ export default function AdminUsers() {
     useEffect(() => { load(); /* eslint-disable-next-line */ }, [page, size]);
 
     const removeUser = async (u: UserRes) => {
-        if (!window.confirm(`Xoá user ${u.username}?`)) return;
         try {
             await axios.delete(`/api/admin/users/${u.id}`);
             toast.success("Đã xoá user");
@@ -124,7 +124,7 @@ export default function AdminUsers() {
                                             Edit
                                         </Link>
                                         <button
-                                            onClick={() => removeUser(u)}
+                                            onClick={() => setConfirmUser(u)}
                                             className="inline-flex items-center rounded-lg border border-red-600 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-600 hover:text-white"
                                         >
                                             Delete
@@ -167,6 +167,35 @@ export default function AdminUsers() {
                     Tổng: <span className="font-medium">{data?.totalElements ?? 0}</span>
                 </div>
             </div>
+
+            {/* Popup xác nhận xoá */}
+            {confirmUser && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+                    <div className="rounded-xl bg-white p-6 shadow-lg w-full max-w-sm">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Xác nhận xoá</h3>
+                        <p className="text-sm text-gray-600 mb-6">
+                            Bạn có chắc chắn muốn xoá user <span className="font-medium">{confirmUser.username}</span>?
+                        </p>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => setConfirmUser(null)}
+                                className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50"
+                            >
+                                Huỷ
+                            </button>
+                            <button
+                                onClick={() => {
+                                    removeUser(confirmUser);
+                                    setConfirmUser(null);
+                                }}
+                                className="rounded-lg bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700"
+                            >
+                                Xoá
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
