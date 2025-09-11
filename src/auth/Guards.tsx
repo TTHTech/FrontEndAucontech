@@ -16,7 +16,6 @@ export const RequireRole: React.FC<{ role: "ROLE_ADMIN" | "ROLE_USER"; children:
     if (loading) return <div>Loading...</div>;
     if (!me) return <Navigate to="/login" state={{ from: loc }} replace />;
 
-    // Cho phép ADMIN đi vào mọi nơi của USER; còn trang ADMIN thì check đúng role
     if (role === "ROLE_ADMIN" && me.role !== "ROLE_ADMIN")
         return <Navigate to="/403" replace />;
     return children;

@@ -33,15 +33,12 @@ export default function App() {
         <AuthProvider>
             <Toaster position="top-right" />
             <BrowserRouter>
-                {/* Navbar hiển thị cho mọi route trừ login/register */}
                 <Navbar />
 
                 <Routes>
-                    {/* Public */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
 
-                    {/* Admin */}
                     <Route path="/admin" element={<Navigate to="/admin/users" replace />} />
                     <Route
                         path="/admin/users"
@@ -51,7 +48,6 @@ export default function App() {
                             </AdminGuard>
                         }
                     />
-                    {/* NEW: tạo user */}
                     <Route
                         path="/admin/users/new"
                         element={
@@ -60,7 +56,6 @@ export default function App() {
                             </AdminGuard>
                         }
                     />
-                    {/* NEW: sửa user */}
                     <Route
                         path="/admin/users/:id/edit"
                         element={
@@ -70,7 +65,6 @@ export default function App() {
                         }
                     />
 
-                    {/* User đăng nhập */}
                     <Route
                         path="/new"
                         element={

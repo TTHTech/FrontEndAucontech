@@ -5,7 +5,6 @@ export default function Navbar() {
     const { me, token, logout } = useAuth();
     const location = useLocation();
 
-    // Ẩn navbar khi ở login hoặc register
     if (location.pathname === "/login" || location.pathname === "/register") {
         return null;
     }

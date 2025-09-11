@@ -40,8 +40,8 @@ export default function Register() {
         {msg && (
           <div
             className={`mb-4 rounded-lg px-4 py-2 text-sm ${success
-                ? "border border-green-200 bg-green-50 text-green-700"
-                : "border border-red-200 bg-red-50 text-red-600"
+              ? "border border-green-200 bg-green-50 text-green-700"
+              : "border border-red-200 bg-red-50 text-red-600"
               }`}
           >
             {msg}
@@ -98,7 +98,6 @@ export default function Register() {
           </button>
         </form>
 
-        {/* Link quay lại login */}
         <p className="mt-6 text-center text-sm text-gray-600">
           Đã có tài khoản?{" "}
           <Link

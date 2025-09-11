@@ -16,7 +16,6 @@ export default function EditPost() {
 
   const nav = useNavigate();
 
-  // Load bài viết khi edit
   useEffect(() => {
     let mounted = true;
     const fetch = async () => {
@@ -38,7 +37,6 @@ export default function EditPost() {
     return () => {
       mounted = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const submit = async (e: React.FormEvent) => {
@@ -83,7 +81,6 @@ export default function EditPost() {
         onSubmit={submit}
         className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
       >
-        {/* Alert message */}
         {msg && (
           <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {msg}
@@ -100,7 +97,6 @@ export default function EditPost() {
           </div>
         ) : (
           <>
-            {/* Title */}
             <label className="mb-1 block text-sm font-medium text-gray-700">
               Tiêu đề
             </label>
@@ -118,7 +114,6 @@ export default function EditPost() {
               </span>
             </div>
 
-            {/* Content */}
             <label className="mt-5 mb-1 block text-sm font-medium text-gray-700">
               Nội dung
             </label>
@@ -136,7 +131,6 @@ export default function EditPost() {
               </span>
             </div>
 
-            {/* Actions */}
             <div className="mt-6 flex items-center gap-3">
               <button
                 type="submit"

@@ -19,7 +19,6 @@ export default function AdminUsers() {
         try {
             setLoading(true);
             const res = await axios.get<Page<UserRes>>("/api/admin/users", { params: { q, page, size } });
-            // Ẩn admin khỏi list
             res.data.content = res.data.content.filter((u) => u.role === "ROLE_USER");
             setData(res.data);
         } catch (e: any) {

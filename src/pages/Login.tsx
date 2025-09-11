@@ -16,13 +16,11 @@ export default function Login() {
     try {
       setSubmitting(true);
 
-      // Gọi login, login sẽ trả về thông tin me luôn
       const me = await login(username, password);
       if (!me) throw new Error("Không lấy được thông tin người dùng");
 
       toast.success("Đăng nhập thành công!");
 
-      // Điều hướng theo role
       if (me.role === "ROLE_ADMIN") {
         nav("/admin", { replace: true });
       } else {

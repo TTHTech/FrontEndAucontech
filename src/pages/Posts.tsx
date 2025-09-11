@@ -9,20 +9,19 @@ type Page<T> = {
   content: T[];
   totalElements: number;
   totalPages: number;
-  number: number; // current page (0-based)
-  size: number;   // page size
+  number: number;
+  size: number;
 };
 
 export default function Posts() {
   const [data, setData] = useState<Page<Post> | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
-  // phân trang
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
 
-  // lọc bài viết
   const [filter, setFilter] = useState<"all" | "mine">("all");
 
   const nav = useNavigate();
@@ -31,9 +30,18 @@ export default function Posts() {
   const load = async () => {
     try {
       setLoading(true);
-      const endpoint = filter === "mine" ? "/posts/mine" : "/posts";
+      setError(null);
+      // SỬA: thêm prefix /api
+      const endpoint = filter === "mine" ? "/api/posts/mine" : "/api/posts";
       const { data } = await api.get<Page<Post>>(endpoint, { params: { page, size } });
       setData(data);
+    } catch (e: any) {
+      console.error(e);
+      setError(
+        e?.response?.status === 404
+          ? "Không tìm thấy endpoint API. Kiểm tra lại URL/proxy."
+          : "Tải danh sách bài viết thất bại."
+      );
     } finally {
       setLoading(false);
     }
@@ -46,10 +54,16 @@ export default function Posts() {
 
   const remove = async (id: number) => {
     if (!window.confirm("Xoá bài viết?")) return;
-    await api.delete(`/posts/${id}`);
-    const isLastItemOnPage = (data?.content.length ?? 1) === 1 && page > 0;
-    if (isLastItemOnPage) setPage((p) => p - 1);
-    else load();
+    try {
+      // SỬA: thêm prefix /api
+      await api.delete(`/api/posts/${id}`);
+      const isLastItemOnPage = (data?.content.length ?? 1) === 1 && page > 0;
+      if (isLastItemOnPage) setPage((p) => p - 1);
+      else load();
+    } catch (e: any) {
+      console.error(e);
+      alert("Xoá thất bại.");
+    }
   };
 
   // lọc client-side trên trang hiện tại
@@ -108,7 +122,12 @@ export default function Posts() {
         </div>
       </div>
 
-      {/* Content */}
+      {error && (
+        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </div>
+      )}
+
       {loading ? (
         <ul className="space-y-4">
           {Array.from({ length: 4 }).map((_, i) => (

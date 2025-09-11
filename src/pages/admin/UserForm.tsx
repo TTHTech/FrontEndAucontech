@@ -12,10 +12,9 @@ export default function UserForm() {
     const nav = useNavigate();
 
     const [username, setUsername] = useState("");
-    const [password, setPassword] = useState(""); // edit: bỏ trống = không đổi
+    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // load user khi edit
     useEffect(() => {
         const run = async () => {
             if (!isEdit) return;
@@ -36,7 +35,6 @@ export default function UserForm() {
             }
         };
         run();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     const submit = async (e: React.FormEvent) => {
