@@ -23,6 +23,7 @@ export default function Posts() {
   const [size, setSize] = useState(10);
 
   const [filter, setFilter] = useState<"all" | "mine">("all");
+  const [confirmId, setConfirmId] = useState<number | null>(null); // popup state
 
   const nav = useNavigate();
   const { me } = useAuth();
@@ -31,7 +32,6 @@ export default function Posts() {
     try {
       setLoading(true);
       setError(null);
-      // SỬA: thêm prefix /api
       const endpoint = filter === "mine" ? "/api/posts/mine" : "/api/posts";
       const { data } = await api.get<Page<Post>>(endpoint, { params: { page, size } });
       setData(data);
@@ -53,9 +53,7 @@ export default function Posts() {
   }, [page, size, filter]);
 
   const remove = async (id: number) => {
-    if (!window.confirm("Xoá bài viết?")) return;
     try {
-      // SỬA: thêm prefix /api
       await api.delete(`/api/posts/${id}`);
       const isLastItemOnPage = (data?.content.length ?? 1) === 1 && page > 0;
       if (isLastItemOnPage) setPage((p) => p - 1);
@@ -188,7 +186,7 @@ export default function Posts() {
                         Sửa
                       </button>
                       <button
-                        onClick={() => remove(p.id)}
+                        onClick={() => setConfirmId(p.id)}
                         className="rounded-lg bg-red-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-600"
                       >
                         Xoá
@@ -247,6 +245,33 @@ export default function Posts() {
             </div>
           </div>
         </>
+      )}
+
+      {/* Popup xác nhận xoá */}
+      {confirmId !== null && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="rounded-xl bg-white p-6 shadow-lg w-full max-w-sm">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Xác nhận xoá</h3>
+            <p className="text-sm text-gray-600 mb-6">Bạn có chắc chắn muốn xoá bài viết này?</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setConfirmId(null)}
+                className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50"
+              >
+                Huỷ
+              </button>
+              <button
+                onClick={() => {
+                  if (confirmId !== null) remove(confirmId);
+                  setConfirmId(null);
+                }}
+                className="rounded-lg bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700"
+              >
+                Xoá
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
