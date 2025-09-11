@@ -22,7 +22,7 @@ export default function EditPost() {
       if (!isEdit) return;
       try {
         setLoading(true);
-        const { data } = await api.get<PostDetail>(`/posts/${id}`);
+        const { data } = await api.get<PostDetail>(`api/posts/${id}`);
         if (mounted) {
           setTitle(data?.title ?? "");
           setContent(data?.content ?? "");
@@ -49,8 +49,8 @@ export default function EditPost() {
         setMsg("Vui lòng nhập đầy đủ tiêu đề và nội dung.");
         return;
       }
-      if (isEdit) await api.put(`/posts/${id}`, payload);
-      else await api.post("/posts", payload);
+      if (isEdit) await api.put(`api/posts/${id}`, payload);
+      else await api.post("api/posts", payload);
       nav("/");
     } catch (err: any) {
       setMsg(err?.response?.data?.error || "Có lỗi xảy ra, vui lòng thử lại.");
