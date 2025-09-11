@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext.tsx";
 import { ProtectedRoute } from "./auth/ProtectedRoute.tsx";
 import Login from "./pages/Login.tsx";
@@ -7,41 +7,70 @@ import Register from "./pages/Register.tsx";
 import Posts from "./pages/Posts.tsx";
 import EditPost from "./pages/EditPost.tsx";
 
-function TailwindTest() {
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-600 to-sky-500 flex items-center justify-center p-6">
-            <div className="max-w-md w-full rounded-2xl bg-white/90 backdrop-blur p-8 shadow-xl">
-                <h1 className="text-3xl font-bold text-indigo-700">Tailwind OK 🎉</h1>
-                <p className="mt-2 text-gray-600">
-                    Nếu bạn thấy khối màu, font bold, bo góc và đổ bóng như thế này, Tailwind đang hoạt động.
-                </p>
-                <div className="mt-4 flex gap-3">
-                    <button className="rounded-xl bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
-                        Nút thử
-                    </button>
-                    <Link
-                        to="/"
-                        className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50"
-                    >
-                        Về trang chính
-                    </Link>
-                </div>
-            </div>
-        </div>
-    );
-}
+/* ====== CHỈ THÊM IMPORT MỚI ====== */
+import { Navigate } from "react-router-dom";
+import { useAuth } from "./auth/AuthContext.tsx";
+import { Toaster } from "react-hot-toast";
+import AdminUsers from "./pages/admin/AdminUsers.tsx";
+import Navbar from "./components/Navbar.tsx";
+/* NEW */ import UserForm from "./pages/admin/UserForm.tsx";
+/* ================================= */
+
+const AdminGuard: React.FC<{ children: JSX.Element }> = ({ children }) => {
+    const { me, loading } = useAuth();
+
+    if (loading) return <div>Loading...</div>;
+    if (!me) return <Navigate to="/login" replace />;
+
+    const role = (me.role || "").toUpperCase();
+    if (!role.includes("ADMIN")) return <Navigate to="/" replace />;
+
+    return children;
+};
 
 export default function App() {
     return (
         <AuthProvider>
+            <Toaster position="top-right" />
             <BrowserRouter>
-                <Routes>
-                    {/* Route test Tailwind */}
-                    <Route path="/tw" element={<TailwindTest />} />
+                {/* Navbar hiển thị cho mọi route trừ login/register */}
+                <Navbar />
 
-                    {/* App routes */}
+                <Routes>
+                    {/* Public */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+
+                    {/* Admin */}
+                    <Route path="/admin" element={<Navigate to="/admin/users" replace />} />
+                    <Route
+                        path="/admin/users"
+                        element={
+                            <AdminGuard>
+                                <AdminUsers />
+                            </AdminGuard>
+                        }
+                    />
+                    {/* NEW: tạo user */}
+                    <Route
+                        path="/admin/users/new"
+                        element={
+                            <AdminGuard>
+                                <UserForm />
+                            </AdminGuard>
+                        }
+                    />
+                    {/* NEW: sửa user */}
+                    <Route
+                        path="/admin/users/:id/edit"
+                        element={
+                            <AdminGuard>
+                                <UserForm />
+                            </AdminGuard>
+                        }
+                    />
+
+                    {/* User đăng nhập */}
                     <Route
                         path="/new"
                         element={
