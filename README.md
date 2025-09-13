@@ -56,9 +56,9 @@ npm install
 ```bash
 npm run dev
 ```
-Ứng dụng: http://localhost:5173
+Ứng dụng: http://localhost:3000
 
-> Nhớ bật backend ở `http://localhost:8080` và **CORS** cho `http://localhost:5173`.
+> Nhớ bật backend ở `http://localhost:8080` và **CORS** cho `http://localhost:3000`.
 
 ### 3) Build production
 ```bash
