@@ -22,7 +22,7 @@ export default function Register() {
       return;
     }
     try {
-      await api.post("api/auth/register", { username, password });
+      await api.post("/api/auth/register", { username, password });
       setSuccess(true);
       setMsg("Đăng ký thành công! Hãy đăng nhập.");
       setUsername("");
