@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import { api } from "../../api.ts";
 import toast from "react-hot-toast";
 
 type Role = "ROLE_ADMIN" | "ROLE_USER";
@@ -20,15 +20,15 @@ export default function UserForm() {
             if (!isEdit) return;
             try {
                 setLoading(true);
-                const res = await axios.get<UserRes>(`/api/admin/users/${id}`);
+                const res = await api.get<UserRes>(`/api/admin/users/${id}`);
                 if (res.data.role === "ROLE_ADMIN") {
-                    toast.error("Không chỉnh sửa ADMIN tại đây");
+                    toast.error("Không thể chỉnh sửa tài khoản ADMIN tại đây");
                     nav("/admin/users", { replace: true });
                     return;
                 }
                 setUsername(res.data.username);
             } catch (e: any) {
-                toast.error(e?.response?.data?.message || "Không lấy được thông tin user");
+                toast.error(e?.response?.data?.message || "Không lấy được thông tin người dùng");
                 nav("/admin/users", { replace: true });
             } finally {
                 setLoading(false);
@@ -42,23 +42,23 @@ export default function UserForm() {
         try {
             setLoading(true);
             if (isEdit) {
-                await axios.put(`/api/admin/users/${id}`, {
+                await api.put(`/api/admin/users/${id}`, {
                     username,
                     ...(password ? { password } : {}),
                 });
-                toast.success("Cập nhật user thành công");
+                toast.success("Cập nhật người dùng thành công");
             } else {
-                await axios.post(`/api/admin/users`, {
+                await api.post(`/api/admin/users`, {
                     username,
                     password,
                     role: "ROLE_USER",
                 });
-                toast.success("Tạo user thành công");
+                toast.success("Tạo người dùng thành công");
             }
             nav("/admin/users", { replace: true });
         } catch (e: any) {
             toast.error(
-                e?.response?.data?.message || (isEdit ? "Cập nhật thất bại" : "Tạo user thất bại")
+                e?.response?.data?.message || (isEdit ? "Cập nhật thất bại" : "Tạo người dùng thất bại")
             );
         } finally {
             setLoading(false);
@@ -72,7 +72,7 @@ export default function UserForm() {
                     {isEdit ? "Sửa người dùng" : "Thêm người dùng"}
                 </h2>
                 <p className="mt-1 text-sm text-gray-500">
-                    {isEdit ? "Đổi username và/hoặc đặt lại mật khẩu (tuỳ chọn)." : "Tạo user với role USER."}
+                    {isEdit ? "Đổi tên đăng nhập và/hoặc đặt lại mật khẩu (tùy chọn)." : "Tạo người dùng với quyền USER."}
                 </p>
             </div>
 
@@ -82,12 +82,12 @@ export default function UserForm() {
             >
                 <div className="space-y-4">
                     <div>
-                        <label className="mb-1 block text-sm font-medium text-gray-700">Username</label>
+                        <label className="mb-1 block text-sm font-medium text-gray-700">Tên đăng nhập</label>
                         <input
                             className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Nhập username"
+                            placeholder="Nhập tên đăng nhập"
                             required
                             disabled={loading}
                         />
@@ -95,14 +95,14 @@ export default function UserForm() {
 
                     <div>
                         <label className="mb-1 block text-sm font-medium text-gray-700">
-                            {isEdit ? "New Password (optional)" : "Password"}
+                            {isEdit ? "Mật khẩu mới (tùy chọn)" : "Mật khẩu"}
                         </label>
                         <input
                             type="password"
                             className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder={isEdit ? "Để trống nếu không đổi" : "••••••••"}
+                            placeholder={isEdit ? "Để trống nếu không đổi" : "Nhập mật khẩu"}
                             {...(isEdit ? {} : { required: true })}
                             disabled={loading}
                         />
@@ -115,7 +115,7 @@ export default function UserForm() {
                         disabled={loading}
                         className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-60"
                     >
-                        {isEdit ? "Lưu thay đổi" : "Tạo mới"}
+                        {loading ? "Đang xử lý..." : (isEdit ? "Lưu thay đổi" : "Tạo mới")}
                     </button>
                     <button
                         type="button"

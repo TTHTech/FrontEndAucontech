@@ -18,7 +18,7 @@ export default function Navbar() {
                     to="/admin/users"
                     className="text-sm font-medium text-gray-700 hover:text-blue-600"
                 >
-                    Admin
+                    Trang quản trị
                 </Link>
             ) : (
                 <Link
