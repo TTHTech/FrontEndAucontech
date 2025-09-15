@@ -173,7 +173,7 @@ export default function Posts() {
                       <h3 className="line-clamp-2 text-lg font-semibold text-gray-900">
                         {p.title}
                       </h3>
-                      <p className="text-xs text-gray-500">by {p.author}</p>
+                      <p className="text-xs text-gray-500">tạo bởi {p.author}</p>
                     </div>
                   </div>
                   {/* Nút chỉ hiện nếu user là tác giả */}

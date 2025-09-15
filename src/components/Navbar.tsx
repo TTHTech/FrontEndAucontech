@@ -25,7 +25,7 @@ export default function Navbar() {
                     to="/"
                     className="text-sm font-medium text-gray-700 hover:text-blue-600"
                 >
-                    Home
+                    Trang chủ
                 </Link>
             )}
 
