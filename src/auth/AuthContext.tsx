@@ -22,7 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(!!localStorage.getItem("token"));
 
   useEffect(() => {
-    axios.defaults.baseURL = process.env.REACT_APP_API_URL ?? "http://localhost:8080";
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL ?? "https://backendaucontech.onrender.com";
 
     const reqId = axios.interceptors.request.use((config) => {
       const t = localStorage.getItem("token");
