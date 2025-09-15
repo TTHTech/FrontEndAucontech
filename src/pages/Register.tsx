@@ -54,11 +54,11 @@ export default function Register() {
         <form onSubmit={submit} className="space-y-4">
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">
-              Username
+              Tên đăng nhập
             </label>
             <input
               className="w-full rounded-xl border border-gray-300 px-4 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-              placeholder="Nhập username"
+              placeholder="Nhập tên đăng nhập"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -67,12 +67,12 @@ export default function Register() {
 
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">
-              Password
+              Mật khẩu
             </label>
             <div className="relative">
               <input
                 className="w-full rounded-xl border border-gray-300 px-4 py-2 pr-12 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                placeholder="••••••••"
+                placeholder="Nhập mật khẩu"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
