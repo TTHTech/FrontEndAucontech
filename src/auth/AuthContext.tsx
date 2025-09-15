@@ -22,7 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(!!localStorage.getItem("token"));
 
   useEffect(() => {
-    axios.defaults.baseURL = process.env.REACT_APP_API_URL ?? "https://backendaucontech.onrender.com";
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL ?? "http://localhost:8080";
 
     const reqId = axios.interceptors.request.use((config) => {
       const t = localStorage.getItem("token");
@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     try {
       setLoading(true);
-      const res = await axios.get<MeRes>("/auth/me");
+      const res = await axios.get<MeRes>("/api/auth/me");
       setMe(res.data);
       return res.data;
     } catch {
@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [token]);
 
   const login = async (username: string, password: string): Promise<MeRes | null> => {
-    const { data } = await axios.post<{ token: string }>("/auth/login", { username, password });
+    const { data } = await axios.post<{ token: string }>("/api/auth/login", { username, password });
     const newToken = data.token;
 
     localStorage.setItem("token", newToken);
@@ -85,7 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     try {
       setLoading(true);
-      const meRes = await axios.get<MeRes>("/auth/me", {
+      const meRes = await axios.get<MeRes>("/api/auth/me", {
         headers: { Authorization: `Bearer ${newToken}` },
       });
       setMe(meRes.data);
