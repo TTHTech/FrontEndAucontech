@@ -1,6 +1,6 @@
 // src/auth/AuthContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { api } from "../api";
+import { api } from "../api.ts";
 
 type Role = "ROLE_ADMIN" | "ROLE_USER";
 type MeRes = { id: number; username: string; role: Role };
