@@ -59,7 +59,7 @@ export default function AdminUsers() {
             </div>
 
             {/* Tìm kiếm + kích thước */}
-            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex w-full max-w-md items-center rounded-lg border border-gray-300 bg-white px-3 py-2 focus-within:ring-2 focus-within:ring-blue-100">
                     <input
                         value={q}
@@ -69,14 +69,14 @@ export default function AdminUsers() {
                     />
                     <button
                         onClick={() => { setPage(0); load(); }}
-                        className="ml-2 rounded-md border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
+                        className="ml-2 rounded-md border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50 whitespace-nowrap"
                     >
                         Tìm kiếm
                     </button>
                 </div>
 
-                <div className="flex items-center gap-2 sm:ml-auto">
-                    <span className="text-sm text-gray-600">Kích thước</span>
+                <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600 whitespace-nowrap">Kích thước</span>
                     <select
                         value={size}
                         onChange={(e) => setSize(Number(e.target.value))}
