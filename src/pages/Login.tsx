@@ -28,7 +28,11 @@ export default function Login() {
         nav("/", { replace: true });
       }
     } catch (err: any) {
-      toast.error(err?.response?.data?.error || "Đăng nhập thất bại");
+      if (err?.response?.status === 401 || err?.response?.status === 403) {
+        toast.error("Tên đăng nhập hoặc mật khẩu không đúng");
+      } else {
+        toast.error(err?.response?.data?.error || "Đăng nhập thất bại");
+      }
     } finally {
       setSubmitting(false);
     }
