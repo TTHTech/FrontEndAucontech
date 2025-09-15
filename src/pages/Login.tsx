@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext.tsx";
 import toast from "react-hot-toast";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -54,7 +55,7 @@ export default function Login() {
             <label className="mb-1 block text-sm font-medium text-gray-700">Password</label>
             <div className="relative">
               <input
-                className="w-full rounded-xl border border-gray-300 px-4 py-2 pr-10 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-xl border border-gray-300 px-4 py-2 pr-12 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 placeholder="••••••••"
                 type={show ? "text" : "password"}
                 value={password}
@@ -64,10 +65,14 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => setShow((s) => !s)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded px-2 text-xs text-gray-600 hover:bg-gray-100"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-100"
                 tabIndex={-1}
               >
-                {show ? "Ẩn" : "Hiện"}
+                {show ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
               </button>
             </div>
           </div>
