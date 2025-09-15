@@ -22,7 +22,7 @@ export default function Register() {
       return;
     }
     try {
-      await api.post("/api/auth/register", { username, password });
+      await api.post("/auth/register", { username, password });
       setSuccess(true);
       setMsg("Đăng ký thành công! Hãy đăng nhập.");
       setUsername("");
@@ -95,7 +95,7 @@ export default function Register() {
 
           <div>
             <label className="mb-1 block text-sm font-medium text-gray-700">
-              Confirm Password
+              Xác nhận mật khẩu
             </label>
             <div className="relative">
               <input

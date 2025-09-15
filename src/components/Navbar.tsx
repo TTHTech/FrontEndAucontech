@@ -37,7 +37,7 @@ export default function Navbar() {
                     onClick={logout}
                     className="rounded-lg border border-red-500 px-3 py-1.5 text-sm font-medium text-red-500 transition hover:bg-red-500 hover:text-white"
                 >
-                    Logout
+                    Đăng xuất
                 </button>
             </div>
         </nav>
